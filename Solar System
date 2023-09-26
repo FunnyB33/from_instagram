@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            overflow: hidden;
+        }
+
+        .container {
+            font-size: 15px;
+            width: 100%; /* 画面幅いっぱいに広げる */
+            height: 100%; /* 画面高さいっぱいに広げる */
+            position: relative;
+        }
+
+        .sun {
+            position: absolute;
+            top: calc(50% - 5em); /* 垂直方向の位置を中央に */
+            left: calc(50% - 5em); /* 水平方向の位置を中央に */
+            width: 10em;
+            height: 10em;
+            background-color: yellow;
+            border-radius: 50%;
+            box-shadow: 0 0 3em white;
+        }
+        .mercury,
+        .venus,
+        .earth,
+        .moon,
+        .mars {
+            position: absolute;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+            border-width: 0.1em 0.1em 0 0;
+            border-radius: 50%;
+        }
+        .mercury{                         
+            top: calc(50% - 5.7em);   /* 太陽からの距離 *//*弧の位置を指してる */
+            left: calc(50% - 5.7em);  /* 太陽からの距離 *//*弧の位置を指してる */
+            width: 11.4em;             /* 太陽からの距離 *2 *//*弧の淵を指してる */
+            height: 11.4em;            /* 太陽からの距離 *2 *//*弧の淵を指してる */
+            animation: orbit 8.7965s linear infinite;
+        }
+
+        .venus{
+            top: calc(50% - 10.845em);   /* 太陽からの距離 *//*弧の位置を指してる */
+            left: calc(50% - 10.845em);  /* 太陽からの距離 *//*弧の位置を指してる */
+            width: 21.69em;             /* 太陽からの距離 *2 *//*弧の淵を指してる */
+            height: 21.69em;            /* 太陽からの距離 *2 *//*弧の淵を指してる */
+            animation: orbit 22.4475s linear infinite;
+        }
+        .earth {
+            top: calc(50% - 15em); /* 垂直方向の位置を中央から太陽までの距離に調整 */
+            left: calc(50% - 15em); /* 水平方向の位置を中央から太陽までの距離に調整 */
+            width: 30em;
+            height: 30em;
+            animation: orbit 36.5s linear infinite;
+        }
+
+        .moon {
+            top: 1.9em;
+            right: 1.85em;
+            width: 5em;
+            height: 5em;
+            animation: orbit 2.730370868s linear infinite;
+        }
+        .mars {                         
+            top: calc(50% - 22.86em);   /* 太陽からの距離 *//*弧の位置を指してる */
+            left: calc(50% - 22.86em);  /* 太陽からの距離 *//*弧の位置を指してる */
+            width: 45.72em;             /* 太陽からの距離 *2 *//*弧の淵を指してる */
+            height: 45.72em;            /* 太陽からの距離 *2 *//*弧の淵を指してる */
+            animation: orbit 68.6565s linear infinite;
+        }
+
+        
+        .mercury::before,
+        .venus::before,
+        .earth::before,
+        .moon::before,
+        .mars::before {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .mercury::before{
+            top: 1em;
+            right: 1em;
+            width: 1.1475361em;
+            height: 1.1475361em;
+            background-color: rgb(197, 132, 57);
+        }
+
+        .venus::before{
+            top: 2.5em;
+            right: 1em;
+            width: 2.846521691em;
+            height: 2.846521691em;
+            background-color: gold;
+        }
+
+        .earth::before {
+            top: 2.8em;
+            right: 2.8em;
+            width: 3em;
+            height: 3em;
+            background-color: aqua;
+        }
+
+        .moon::before {
+            top: 0.5em;
+            right: 0em;
+            width: 0.818160414em;
+            height: 0.818160414em;
+            background-color: silver;
+        }
+        
+        .mars::before {
+            top: 6.1em;
+            right: 5.55em;
+            width: 1.597434973em;
+            height: 1.597434973em;
+            background-color: rgb(255, 98, 0);
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 0.1px;
+            height: 10px;
+            background: linear-gradient(to top, transparent, rgb(245, 251, 211), transparent);
+            transform: rotate(45deg);
+            animation: shooting 1s linear;
+            opacity: 0;
+        }
+
+    @keyframes shooting {
+        0% {
+            opacity: 1;
+            width: 0.1px;
+        }
+        50% {
+            opacity: 1;
+            transform: translate(7.5em, 7.5em) rotate(45deg);
+            width: 0.75em;
+        }
+        100% {
+            opacity: 0;
+            transform: translate(15em, 15em) rotate(45deg);
+            width: 0.1em;
+        }
+    }
+
+
+        @keyframes orbit {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: rgb(233, 245, 255);
+            border-radius: 50%;
+        }               
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sun">
+            <div class="mercury"></div>
+            <div class="venus"></div>
+            <div class="earth">
+                <div class="moon"></div>
+            </div>
+            <div class="mars"></div>
+        </div>
+        <script>
+            // 星を生成する関数
+            function createStars() {
+                const container = document.querySelector('.container');
+                const numStars = 500; // 生成する星の数
+                for (let i = 0; i < numStars; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+
+                    // ランダムな座標を計算してスタイルに適用
+                    const x = Math.random() * container.clientWidth;
+                    const y = Math.random() * container.clientHeight;
+                    star.style.left = `${x}px`;
+                    star.style.top = `${y}px`;
+
+                    // 星の明るさをランダムに設定
+                    star.style.opacity = Math.random();
+
+                    container.appendChild(star);
+                }
+            }
+
+            // 流れ星を生成する関数
+            // 流れ星を生成する関数
+            function createShootingStar() {
+                const container = document.querySelector('.container');
+                const star = document.createElement('div');
+                star.classList.add('shooting-star');
+
+                // ランダムな開始位置を計算してスタイルに適用
+                const x = Math.random() * container.clientWidth;
+                const y = Math.random() * container.clientHeight;
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+
+                container.appendChild(star);
+
+                // アニメーションが終了したら流れ星を削除
+                star.addEventListener('animationend', () => {
+                    star.remove();
+                });
+            }
+
+
+            // ページが読み込まれたら星を生成
+            window.addEventListener('DOMContentLoaded', createStars);
+
+            // 5秒ごとに流れ星を生成
+            setInterval(createShootingStar, 1000);
+        </script>
+    </div>
+</body>
+</html>
